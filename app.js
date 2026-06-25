@@ -4,10 +4,14 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import encrypt from "mongoose-encryption";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import path from "path";
 import dns from "node:dns";
 dns.setServers(["8.8.8.8", "1.1.1.1"]); 
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+dotenv.config({path: path.resolve(__dirname, ".env")});
 const connection_string = process.env.MONGOOSE_CONNECTION_STRING;
 const app = express();
 const port = 3000;
