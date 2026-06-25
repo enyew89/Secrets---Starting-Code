@@ -3,17 +3,19 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import encrypt from "mongoose-encryption";
+import dotenv from "dotenv";
 import dns from "node:dns";
 dns.setServers(["8.8.8.8", "1.1.1.1"]); 
 
-
-const connection_string = "mongodb+srv://enyewyirga89_db_user:q5lMce4zTdu8LHqp@learnode.vmidjzh.mongodb.net/myDatabaseName?retryWrites=true&w=majority&appName=learnode";
+dotenv.config();
+const connection_string = process.env.MONGOOSE_CONNECTION_STRING;
 const app = express();
 const port = 3000;
 let currentEmail;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+mongoose.set({strictQuery: true})
 
 mongoose
   .connect(connection_string,
@@ -51,7 +53,8 @@ const userSchema = new mongoose.Schema({
   password: String
 })
 
-const key = "iaminlovewithyougirl"
+const key = process.env.SECRET;
+console.log(key);
 
 userSchema.plugin(encrypt, {secret: key, encryptedFields: ["password"]});
 
@@ -72,8 +75,8 @@ app.post("/login", async (req, res) => {
   const email = req.body.username;
   const password = req.body.password;
   const user = await User.findOne({email: email});
-  console.log(user[0]);
-  if(user[0].password === password){
+  console.log(user);
+  if(user.password === password){
     currentEmail = email;
     res.render("secrets");
   }
