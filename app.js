@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import encrypt from "mongoose-encryption";
 import dotenv from "dotenv";
+import md5 from "md5";
 import { fileURLToPath } from "url";
 import path from "path";
 import dns from "node:dns";
@@ -60,17 +61,15 @@ const userSchema = new mongoose.Schema({
 const key = process.env.SECRET;
 console.log(key);
 
-userSchema.plugin(encrypt, {secret: key, encryptedFields: ["password"]});
-
-
 const User = new mongoose.model("User", userSchema);
+
 
 app.post("/register", async(req, res) => {
   const email = req.body.username;
   const password = req.body.password;
   const user = new User({
     email: email,
-    password: password
+    password: md5(password),
   })
   await user.save();
   res.render("secrets")
@@ -80,7 +79,7 @@ app.post("/login", async (req, res) => {
   const password = req.body.password;
   const user = await User.findOne({email: email});
   console.log(user);
-  if(user.password === password){
+  if(user.password === md5(password)){
     currentEmail = email;
     res.render("secrets");
   }

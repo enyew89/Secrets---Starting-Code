@@ -11,9 +11,21 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "md5": "^2.3.0",
     "mongodb": "^7.3.0",
     "mongoose": "^6.13.10",
     "mongoose-encryption": "^2.1.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enyew89/Secrets---Starting-Code.git"
+  },
+  "bugs": {
+    "url": "https://github.com/enyew89/Secrets---Starting-Code/issues"
+  },
+  "homepage": "https://github.com/enyew89/Secrets---Starting-Code#readme"
 }
